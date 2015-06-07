@@ -18,7 +18,7 @@ router.get('/:filter?/:limit?/:page?', function (req, res, next) {
     query.limit(req.query.limit);
     
     if(req.params.page) {
-      query.offset(req.query.limit * req.query.page);
+      query.offset(req.query.limit * --req.query.page);
     }
   }
   
