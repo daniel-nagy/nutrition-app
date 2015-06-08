@@ -25,6 +25,11 @@ if(process.env.NODE_ENV === 'development') {
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
   });
+} else if(process.env.NODE_ENV === 'production') {
+  app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'http://danielnagy.me');
+    next();
+  });
 }
 
 app.use(logger('dev'));
