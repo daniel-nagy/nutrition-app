@@ -9,6 +9,11 @@ router.get('/:filter?/:limit?/:page?', function (req, res, next) {
   console.log('page: '   + req.query.page + '\n\n');
   
   var query = Dessert.find({});
+  var count = 0;
+  
+  Dessert.count({}, function (error, result) {
+    count = result;
+  });
   
   if(req.query.filter) {
     query.sort(req.query.filter);
@@ -23,7 +28,10 @@ router.get('/:filter?/:limit?/:page?', function (req, res, next) {
   }
   
   query.exec(function (error, results) {
-    res.json(results);
+    res.json({
+      count: count,
+      data: results
+    });
   });
 });
 
