@@ -3,8 +3,8 @@ var Dessert     = require('../models/dessert.js');
 var BAD_REQUEST = 400;
 
 // GET items from the nutrition database
-router.get('/:filter?/:limit?/:page?', function (req, res, next) {
-  console.log('filter: ' + req.query.filter);
+router.get('/:order?/:limit?/:page?', function (req, res, next) {
+  console.log('order: ' + req.query.order);
   console.log('limit: '  + req.query.limit);
   console.log('page: '   + req.query.page + '\n\n');
   
@@ -15,8 +15,8 @@ router.get('/:filter?/:limit?/:page?', function (req, res, next) {
     count = result;
   });
   
-  if(req.query.filter) {
-    query.sort(req.query.filter);
+  if(req.query.order) {
+    query.sort(req.query.order);
   }
   
   if(req.query.limit) {
