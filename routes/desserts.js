@@ -1,13 +1,8 @@
-var router      = require('express').Router();
-var Dessert     = require('../models/dessert.js');
-var BAD_REQUEST = 400;
+var router  = require('express').Router();
+var Dessert = require('../models/dessert.js');
 
-// GET items from the nutrition database
-router.get('/:order?/:limit?/:page?', function (req, res, next) {
-  console.log('order: ' + req.query.order);
-  console.log('limit: '  + req.query.limit);
-  console.log('page: '   + req.query.page + '\n\n');
-  
+// get desserts from the nutrition database
+router.get('/', function (req, res, next) {
   var query = Dessert.find({});
   var count = 0;
   
@@ -32,6 +27,26 @@ router.get('/:order?/:limit?/:page?', function (req, res, next) {
       count: count,
       data: results
     });
+  });
+});
+
+// delete dessert
+router.delete('/:id', function (req, res, next) {
+  Dessert.findByIdAndRemove(req.params.id, function (error, item) {
+    if(error) {
+      return next(error);
+    }
+    res.send(res.status = 200);
+  })
+});
+
+// create dessert
+router.post('/', function (req, res, next) {
+  new Dessert(req.body.dessert).save(function (error, item) {
+    if(error) {
+      return next(error);
+    }
+    res.send(res.status = 200);
   });
 });
 
