@@ -29,6 +29,7 @@ if(process.env.NODE_ENV === 'development') {
 } else if(process.env.NODE_ENV === 'production') {
   app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', 'http://danielnagy.me');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
   });
 }
