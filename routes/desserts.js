@@ -30,6 +30,21 @@ router.get('/', function (req, res, next) {
   });
 });
 
+router.get('/search', function (req, res, next) {
+  var query = Dessert.find({name: new RegExp('^' + req.query.filter, 'i')});
+  
+  if(req.query.limit) {
+    query.limit(req.query.limit);
+  }
+  
+  query.exec(function (error, results) {
+    res.json({
+      count: results.length,
+      data: results
+    });
+  });
+});
+
 // delete dessert
 router.delete('/:id', function (req, res, next) {
   Dessert.findByIdAndRemove(req.params.id, function (error, item) {
