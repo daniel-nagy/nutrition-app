@@ -3,7 +3,7 @@ var Dessert = require('../models/dessert.js');
 
 // get desserts from the nutrition database
 router.get('/', function (req, res, next) {
-  var filter = req.query.filter ? {nameToLower: new RegExp('^' + req.query.filter)} : {};
+  var filter = req.query.filter ? {nameToLower: new RegExp('^' + req.query.filter.toLowerCase())} : {};
   var query  = Dessert.find(filter);
   var count  = 0;
   
