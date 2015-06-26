@@ -3,10 +3,11 @@ var Dessert = require('../models/dessert.js');
 
 // get desserts from the nutrition database
 router.get('/', function (req, res, next) {
-  var query = Dessert.find({});
-  var count = 0;
+  var filter = req.query.filter ? {nameToLower: new RegExp('^' + req.query.filter)} : {};
+  var query  = Dessert.find(filter);
+  var count  = 0;
   
-  Dessert.count({}, function (error, result) {
+  Dessert.count(filter, function (error, result) {
     count = result;
   });
   
@@ -25,21 +26,6 @@ router.get('/', function (req, res, next) {
   query.exec(function (error, results) {
     res.json({
       count: count,
-      data: results
-    });
-  });
-});
-
-router.get('/search', function (req, res, next) {
-  var query = Dessert.find({name: new RegExp('^' + req.query.filter, 'i')});
-  
-  if(req.query.limit) {
-    query.limit(req.query.limit);
-  }
-  
-  query.exec(function (error, results) {
-    res.json({
-      count: results.length,
       data: results
     });
   });
