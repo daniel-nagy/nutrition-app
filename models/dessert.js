@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var Desserts = new mongoose.Schema({
-  name: { type: String, require: true },
+  name: { type: String, require: true, lowercase: true },
   serving: { type: String, default: "100g" },
   calories: {
     unit: { type: String, default: "Cal" },
