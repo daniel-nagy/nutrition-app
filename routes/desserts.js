@@ -57,6 +57,7 @@ router.delete('/:id', function (req, res, next) {
 
 // create dessert
 router.post('/', function (req, res, next) {
+  req.body.dessert.nameToLower = req.body.dessert.name.toLowerCase();
   new Dessert(req.body.dessert).save(function (error, item) {
     if(error) {
       return next(error);
