@@ -3,9 +3,11 @@ var logger     = require('morgan');
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
 var authorize  = require('./routes/authorize');
-var deserts    = require('./routes/desserts');
+var desserts   = require('./routes/desserts');
 var mongodb    = process.env.MONGOLAB_URI || 'mongodb://localhost/nutrition';
 var app        = express();
+
+mongoose.connect(mongodb);
 
 mongoose.connection.on('connected', function () {
   console.log('database connection successful');
@@ -14,8 +16,6 @@ mongoose.connection.on('connected', function () {
 mongoose.connection.on('error', function () {
   console.log('database connection failed');
 });
-
-mongoose.connect(mongodb);
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -39,7 +39,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/authorize', authorize);
-app.use('/nutriton/desserts', deserts);
+app.use('/nutrition/desserts', desserts);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

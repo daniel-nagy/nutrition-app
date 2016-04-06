@@ -5,28 +5,35 @@ var Dessert = require('../models/dessert.js');
 router.get('/', function (req, res, next) {
   var filter = req.query.filter ? {nameToLower: new RegExp('^' + req.query.filter.toLowerCase())} : {};
   var query  = Dessert.find(filter);
-  var count  = 0;
-  
-  Dessert.count(filter, function (error, result) {
-    count = result;
-  });
-  
+
   if(req.query.order) {
     query.sort(req.query.order);
   }
-  
-  if(req.query.limit) {
-    query.limit(req.query.limit);
-    
-    if(req.query.page) {
+
+  if(!isNaN(req.query.limit)) {
+    query.limit(parseInt(req.query.limit, 10));
+
+    if(!isNaN(req.query.page)) {
       query.skip(req.query.limit * --req.query.page);
     }
   }
-  
-  query.exec(function (error, results) {
-    res.json({
-      count: count,
-      data: results
+
+  var promise = query.exec();
+
+  Dessert.count(filter, function (error, count) {
+    if(error) {
+      return next(error);
+    }
+
+    promise.addBack(function (error, results) {
+      if(error) {
+        return next(error);
+      }
+
+      res.json({
+        count: count,
+        data: results
+      });
     });
   });
 });

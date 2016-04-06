@@ -85,3 +85,7 @@ db.desserts.insert([{
   calcium: { value: 12.0 },
   iron: { value: 6.0 }
 }]);
+
+db.desserts.find().forEach(function (dessert) {
+  db.desserts.update({_id: dessert._id}, {$set: {nameToLower: dessert.name.toLowerCase()}});
+});
