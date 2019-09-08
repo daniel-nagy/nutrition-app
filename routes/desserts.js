@@ -40,12 +40,17 @@ router.get('/', function (req, res, next) {
 
 // delete dessert
 router.delete('/:id', function (req, res, next) {
+  if(req.query.secret !== process.env.SECRET) {
+    res.status(401);
+    return next(new Error('Invalid Secret'));
+  }
+
   Dessert.findByIdAndRemove(req.params.id, function (error, item) {
     if(error) {
       return next(error);
     }
-    res.send(res.status = 200);
-  })
+    res.status(200).send();
+  });
 });
 
 // create dessert
@@ -55,7 +60,7 @@ router.post('/', function (req, res, next) {
     if(error) {
       return next(error);
     }
-    res.send(res.status = 200);
+    res.status(200).send();
   });
 });
 
